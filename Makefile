@@ -1,14 +1,11 @@
-FILES = shm.c
-
 all:
-	gcc shm.c srv.c -o srv && gcc shm.c cli.c -o cli
+	gcc main.o shm.o -o hs
 
-server:
-	gcc shm.c srv.c -o srv
+main.o:
+	gcc main.c -c main.o
 
-
-client:
-	gcc shm.c cli.c -o cli
+shm.o
+	gcc shm.c -c shm.o
 
 clean:
-	rm cli srv
+	rm hs
