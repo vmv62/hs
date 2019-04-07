@@ -14,34 +14,36 @@
 int main(int argc, char *argv[]){
 	modbus_t *ctx;
 
-	int dev_adr = 1, dev_cmd = 4, reg = 0, reg_cnt = 2, baud = 9600, flt = 0, tcp = 0;
+	int dev_adr = 1, dev_cmd = 4, reg = 0, reg_cnt = 2, baud = 2400, flt = 0, tcp = 0;
 	char port[20] = {"/dev/ttyUSB0"};
 	char net_adr[16] = {"127.0.0.1"};
 	uint16_t regs[4];
+	device_t *dev;
+
 
 	int argcnt = 0;
 		if(argc > 1){
 			while(argcnt < argc){
 				if(argv[argcnt][0] == '-'){	//This is atribute of parametr.
 					switch(argv[argcnt][1]){
-						case 'c':	reg_cnt = atoi(argv[argcnt + 1]);				//Задание номера порта вручную
+//						case 'c':	reg_cnt = atoi(argv[argcnt + 1]);				//Задание номера порта вручную
 										break;
 						case 'a':	dev_adr = atoi(argv[argcnt + 1]); //Ручное задание адреса устройства.
 										break;
-						case 'r': 	dev_cmd = (atoi(argv[argcnt + 1]))/1000;
-										reg = (atoi(argv[argcnt + 1]))%1000;
-										break;
-						case 'b':	baud = atoi(argv[argcnt + 1]); //Ручное скорости обмена..
-										break;
-						case 'p':	strcpy(port, argv[argcnt + 1]); //Порт обмена.
-										break;
+//						case 'r': 	dev_cmd = (atoi(argv[argcnt + 1]))/1000;
+//										reg = (atoi(argv[argcnt + 1]))%1000;
+//										break;
+//						case 'b':	baud = atoi(argv[argcnt + 1]); //Ручное скорости обмена..
+//										break;
+//						case 'p':	strcpy(port, argv[argcnt + 1]); //Порт обмена.
+//										break;
 						case 'f':	flt = 1; //Значение с плавающей точкой
 										reg_cnt = 4;
 										break;
-						case 't':	tcp = 1; //Соединение TCP
-										break;
-						case 'n':	strcpy(net_adr, argv[argcnt + 1]); //Адрес соединенияTCP
-										break;
+//						case 't':	tcp = 1; //Соединение TCP
+//										break;
+//						case 'n':	strcpy(net_adr, argv[argcnt + 1]); //Адрес соединенияTCP
+//										break;
 
 					}
 				}
@@ -52,6 +54,19 @@ int main(int argc, char *argv[]){
 				argcnt++;
 			}
 		}
+
+
+	dev = (device_t *)set_shmem(6767, sizeof(device_t))
+
+
+        memcpy(dev->volt.name, "Volt", 5);
+	dev->volt.reg_addr = 30000;
+	dev->volt.reg_value = 0;
+
+
+        memcpy(dev->current.name, "Current", 8);
+	dev->current.reg_addr = 30006;
+	dev->current.reg_value = 0;
 
 
 	if(tcp == 0){
@@ -70,8 +85,15 @@ int main(int argc, char *argv[]){
 
 		if((dev_cmd == 3) || (dev_cmd == 4)){
 			if(flt){
+				dev_cmd = (int)dev->volt.reg_addr/1000;
+				reg = (int)dev->volt.reg_addr%1000;
 				modbus_read_input_registers(ctx, reg, reg_cnt, regs);
-				printf("%.2f\n", get_flo(regs));
+//				printf("%.2f\n", get_flo(regs));
+				dev_cmd = (int)dev->current.reg_addr/1000;
+				reg = (int)dev->current.reg_addr%1000;
+				dev->volt.reg_value = get_flo(regs);
+				modbus_read_input_registers(ctx, reg, reg_cnt, regs);
+				dev->current.reg_value = get_flo(regs);
 			}else{
 				modbus_read_input_registers(ctx, reg, reg_cnt, regs);
 				printf("%d\n", regs[1] || (regs[0] <<8));

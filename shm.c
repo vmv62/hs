@@ -42,7 +42,7 @@ int *get_shmem(int id, int size)
 
 	key = (key_t)id;
 
-	if ((shmid = shmget(key, 100, 0666)) < 0) {
+	if ((shmid = shmget(key, size, 0666)) < 0) {
 		perror("shmget");
 		exit(-1);
 	}

@@ -19,4 +19,3 @@ typedef struct{
 	reg_t current;
 }device_t;
 
-float get_flo(uint16_t *regs);
