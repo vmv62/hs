@@ -1,5 +1,5 @@
 all: main.o shm.o
-	gcc main.o shm.o -o hs
+	gcc main.o shm.o -lmodbus -o hs
 
 main.o:
 	gcc -c main.c

@@ -18,8 +18,6 @@ int main(int argc, char *argv[]){
 	char port[20] = {"/dev/ttyUSB0"};
 	char net_adr[16] = {"127.0.0.1"};
 	uint16_t regs[4];
-	device_t *dev;
-
 
 	int argcnt = 0;
 		if(argc > 1){
@@ -56,17 +54,9 @@ int main(int argc, char *argv[]){
 		}
 
 
-	dev = (device_t *)set_shmem(6767, sizeof(device_t))
+	printf("%d\n", sizeof(device));
+//	device = (reg_t *)set_shmem(6767, sizeof(reg_t));
 
-
-        memcpy(dev->volt.name, "Volt", 5);
-	dev->volt.reg_addr = 30000;
-	dev->volt.reg_value = 0;
-
-
-        memcpy(dev->current.name, "Current", 8);
-	dev->current.reg_addr = 30006;
-	dev->current.reg_value = 0;
 
 
 	if(tcp == 0){
@@ -85,20 +75,14 @@ int main(int argc, char *argv[]){
 
 		if((dev_cmd == 3) || (dev_cmd == 4)){
 			if(flt){
-				dev_cmd = (int)dev->volt.reg_addr/1000;
-				reg = (int)dev->volt.reg_addr%1000;
 				modbus_read_input_registers(ctx, reg, reg_cnt, regs);
 //				printf("%.2f\n", get_flo(regs));
-				dev_cmd = (int)dev->current.reg_addr/1000;
-				reg = (int)dev->current.reg_addr%1000;
-				dev->volt.reg_value = get_flo(regs);
-				modbus_read_input_registers(ctx, reg, reg_cnt, regs);
-				dev->current.reg_value = get_flo(regs);
 			}else{
 				modbus_read_input_registers(ctx, reg, reg_cnt, regs);
 				printf("%d\n", regs[1] || (regs[0] <<8));
 			}
 		}
+
 	}else{
 		short unsigned int tab_reg[32];
 
