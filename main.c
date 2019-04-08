@@ -55,9 +55,12 @@ int main(int argc, char *argv[]){
 
 
 	printf("%d\n", sizeof(device));
-//	device = (reg_t *)set_shmem(6767, sizeof(reg_t));
+//	device = (reg_t *)set_shmem(6767, sizeof(device));
 
 
+//	memcpy(device[0].name, "First register.\n", 17);
+
+	while(1);;
 
 	if(tcp == 0){
 		ctx = modbus_new_rtu(port, baud, 'N', 8, 1);

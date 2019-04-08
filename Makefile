@@ -7,4 +7,4 @@ main.o:
 shm.o:
 		gcc -c shm.c
 clean:
-		rm hs
+		rm hs main.o shm.o
