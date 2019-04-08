@@ -13,10 +13,6 @@ typedef struct{
 }reg_t;
 
 
-
-typedef struct{
-	reg_t volt;
-	reg_t current;
-}device_t;
+reg_t rgs[100];
 
 float get_flo(uint16_t *regs);

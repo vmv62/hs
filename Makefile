@@ -1,8 +1,10 @@
-all:
-		gcc main.o shm.o -o hs
+all: main.o shm.o
+	gcc main.o shm.o -o hs
+
 main.o:
-		gcc main.c -c main.o
-shm.o
-		gcc shm.c -c shm.o
+	gcc -c main.c
+
+shm.o:
+		gcc -c shm.c
 clean:
 		rm hs
