@@ -3,7 +3,6 @@
 #define TOTAL_ACT_POW 0x56
 #define TOTAL_REACT_POW 0x58
 
-
 #define LOG_FLO(exp) printf("%.2f\n", exp)
 
 typedef struct{
@@ -12,10 +11,6 @@ typedef struct{
 	float reg_value;
 }reg_t;
 
+typedef reg_t device[100];
 
-
-typedef struct{
-	reg_t volt;
-	reg_t current;
-}device_t;
-
+float get_flo(uint16_t *regs);

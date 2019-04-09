@@ -4,13 +4,11 @@
 #include "client.h"
 
 int main(int argc, char **argv){
-	device_t *mem ;
+	device *dev ;
 
-	printf("%d\n", sizeof(device_t));
-	mem = (device_t *)get_shmem(6767, sizeof(device_t));
+	dev = (device *)get_shmem(6767, sizeof(device));
 
-	printf("%s\n", mem->volt.name);
-	printf("%.2f\n", mem->volt.reg_value);
+	printf("%s", dev[0]->name);
 
 	return 0;
 }

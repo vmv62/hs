@@ -24,29 +24,16 @@ int main(int argc, char *argv[]){
 			while(argcnt < argc){
 				if(argv[argcnt][0] == '-'){	//This is atribute of parametr.
 					switch(argv[argcnt][1]){
-//						case 'c':	reg_cnt = atoi(argv[argcnt + 1]);				//Задание номера порта вручную
-										break;
 						case 'a':	dev_adr = atoi(argv[argcnt + 1]); //Ручное задание адреса устройства.
 										break;
-//						case 'r': 	dev_cmd = (atoi(argv[argcnt + 1]))/1000;
-//										reg = (atoi(argv[argcnt + 1]))%1000;
-//										break;
-//						case 'b':	baud = atoi(argv[argcnt + 1]); //Ручное скорости обмена..
-//										break;
-//						case 'p':	strcpy(port, argv[argcnt + 1]); //Порт обмена.
-//										break;
 						case 'f':	flt = 1; //Значение с плавающей точкой
 										reg_cnt = 4;
 										break;
-//						case 't':	tcp = 1; //Соединение TCP
-//										break;
-//						case 'n':	strcpy(net_adr, argv[argcnt + 1]); //Адрес соединенияTCP
-//										break;
 
 					}
 				}
 				if(argv[argcnt][0] == '?'){
-					printf("Ключи программы:\n\t-a\t Задание адреса подчиненного устройства в режиме RTU.\n\t-с\t Задание колличества читаемых регистров.\n\t-r\t Команда и адрес регистра (например: 3006, где 3 - команда чтения входного регистра, 6 - адрес этого регистра в приборе).\n\t-b\t Задание скорости обмена в режиме RTU.\n\t-f\t Чтение значения с плавающеей точкой.\n\t-t\t Работа в режиме TCP.\n\t-n\t Сетевой адрес подчиненного в режиме TCP.\n\t-?\t Данная справка.\n");
+					printf("Ключи: \n\ta - адрес устройства в сети.\n\tf - регистры содержат числа с плавающей точкой.\n");
 					return 0;
 				}
 				argcnt++;
@@ -55,7 +42,11 @@ int main(int argc, char *argv[]){
 
 
 	printf("%d\n", sizeof(device));
-//	device = (reg_t *)set_shmem(6767, sizeof(device));
+	device *dev = (device *)set_shmem(6767, sizeof(device));
+
+	memcpy(dev[0]->name, "Test\n", 6);
+
+	printf("%s", dev[0]->name);
 
 
 //	memcpy(device[0].name, "First register.\n", 17);

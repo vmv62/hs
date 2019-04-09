@@ -11,6 +11,6 @@ typedef struct{
 	float reg_value;
 }reg_t;
 
-reg_t device[100];
+typedef reg_t device[100];
 
 float get_flo(uint16_t *regs);
